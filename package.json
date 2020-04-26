@@ -18,7 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "@react-native-community/image-editor": "^2.3.0",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.6.2",
+    "react-native-image-rotate": "^2.1.0"
   },
   "peerDependencies": {
     "react": "*",

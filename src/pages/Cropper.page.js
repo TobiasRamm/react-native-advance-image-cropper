@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {SCREEN_WIDTH, SCREEN_HEIGHT, W, MINIMUM_CROP_AREA, H, Q} from '../components/Cropper/Cropper.constants';
 import Cropper from '../components/Cropper/Cropper.component';
 import { getCropperLimits } from '../utils';
+import ImageRotate from 'react-native-image-rotate';
 
 class CropperPage extends Component {
   constructor(props) {
@@ -609,20 +610,45 @@ class CropperPage extends Component {
       resizeMode: 'stretch'
     };
 
-    ImageEditor.cropImage(this.props.imageUri, cropData).then(url => {
-      const croppedImageData = {
-        width,
-        height,
-        uri: url,
-      };
+    // Rotation is removed for now
 
-      this.props.onDone(croppedImageData);
-    }).catch(err => {
+    // RNImageRotate.rotateImage(
+    //   this.props.imageUri,
+    //   this.state.rotation,
+    //   (rotatedUri) => {
+        //
 
-      console.log('cropping error');
-      console.log(err);
-    });
+    ImageRotate.rotateImage(
+        this.props.imageUri,
+        this.state.rotation,
+        (uri) => {
+          ImageEditor.cropImage(uri, cropData).then(url => {
+            const croppedImageData = {
+              width,
+              height,
+              uri: url,
+            };
 
+            this.props.onDone(croppedImageData);
+          }).catch(err => {
+
+            console.log('cropping error');
+            console.log(err);
+          })
+        },
+        (error) => {
+          console.error(error);
+        }
+    );
+
+
+        //
+    //   },
+    //   (err) => {
+    //     alert(err);
+    //     console.log(err);
+    //   }
+    // );
   }
 
   render() {
